@@ -1,0 +1,14 @@
+Compile source to object 
+avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o morseCode.o morseCode.c
+
+Object to Executable
+avr-gcc -mmcu=atmega328p morseCode.o -o morseCode
+
+Executable to hex?
+avr-objcopy -O ihex -R .eeprom morseCode morseCode.hex
+
+hex flashed to Micro controller
+avrdude -patmega328p -Pcom17 -carduino -D -U flash:w:morseCode.hex:i
+
+Website
+https://www.hackster.io/milanistef/introduction-to-bare-metal-programming-in-arduino-uno-f3e2b4
