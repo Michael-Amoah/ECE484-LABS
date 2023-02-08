@@ -37,13 +37,14 @@
 #endif
 
 /* C Prototypes of functions */
-void stop(short one, short two, short three);
-void my_delay_ms( unsigned int t);
-short is_button_pressed(int a);
+void stop(short light_1, short light_2, short light_3);
+void my_delay_ms( unsigned int time_ms);
+short is_button_pressed(int pin_number);
 
 int main (void) 
 {
 	DBC_SETUP();
+	// Setup Data Direction for pin 3,4,5
 	DDRD |= _BV(DDD3);
 	DDRD |= _BV(DDD4);
 	DDRD |= _BV(DDD5);
@@ -68,49 +69,53 @@ int main (void)
 /* 
  * checks when a is_button_pressed on the D port pressed
  */
-short is_button_pressed(int a)
+short is_button_pressed(int pin_number)
 {
-	int b;
-	if ((PIND & (1 << a)) != 0)
+	PRE_CONDITION_DBC(pin_number >= 0, 6000);
+	int is_pressed;
+	if ((PIND & (1 << pin_number)) != 0)
 	{
 		/* software debounce */
 		_delay_ms(15);
-		if ((PIND & (1 << a)) != 0)
+		if ((PIND & (1 << pin_number)) != 0)
 		{
-			b = 1;
+			is_pressed = 1;
 		}
 		else 
 		{
-			b = 0;
+			is_pressed = 0;
 		}
 	}
 	else
 	{
-		b = 0;
+		is_pressed = 0;
 	}
 
-	return b;
+
+	return is_pressed;
 }
 
 /* 
  * stop light
  */
-void stop(short one, short two, short three)
+void stop(short light_1, short light_2, short light_3)
 {
-	if (one)
+	PRE_CONDITION_DBC( (light_1 + light_2 + light_3) != 0, 5000);
+	if (light_1)
         	PORTD |= _BV(PORTD5);
 	else
         	PORTD &= ~_BV(PORTD5);
 
-	if (two)
+	if (light_2)
         	PORTD |= _BV(PORTD4);
 	else
         	PORTD &= ~_BV(PORTD4);
 
-	if (three)
+	if (light_3)
         	PORTD |= _BV(PORTD3);
 	else
         	PORTD &= ~_BV(PORTD3);
+	POST_CONDITION_DBC( (light_1 + light_2 + light_3) >= 0, 4000);
 }
 
 /* 
@@ -119,11 +124,11 @@ void stop(short one, short two, short three)
  *
  * borrowed from : https://www.avrfreaks.net/forum/delayms-problem 
  * */
-void my_delay_ms(unsigned int t) 
+void my_delay_ms(unsigned int time_ms) 
 {
 	unsigned int i;
 
-	for (i=0; i<(t/10); i++) 
+	for (i=0; i<(time_ms/10); i++) 
 	{
 		_delay_ms(10);
 	}
