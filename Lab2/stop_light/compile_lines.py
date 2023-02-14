@@ -14,3 +14,4 @@ os.system(f'avr-gcc -mmcu=atmega328p {file_name}.o -o {file_name}')
 os.system(f'avr-objcopy -O ihex -R .eeprom {file_name} {file_name}.hex')
 
 os.system(f'avrdude -patmega328p -P{com_output} -carduino -D -U flash:w:{file_name}.hex:i')
+
