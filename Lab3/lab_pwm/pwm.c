@@ -111,19 +111,19 @@ void pwm_hw_setup()
 	// OCR1B = 0xBFFF;
 	
     	// set TOP to 16bit
-	ICR1 = 
+	ICR1 = 0xFFFF;
 
 	OCR1A = 0x0000;
 	OCR1B = 0x0000;
 
 	// set none-inverting mode
-	TCCR1A |= 
+	TCCR1A |= (1 << COM1A1);
 	// set Fast PWM mode using ICR1 as TOP - MODE 14
-	TCCR1A |= 
-	TCCR1B |= 
+	TCCR1A |= (1 << WGM11);
+	TCCR1B |= (1 << WGM13) | (1 << WGM12);
     
 	// START the timer with no prescaler
-	TCCR1B |= 
+	TCCR1B |= (1 << CS10);
 
 	// TIMER 2 - 8 bit
 	// OC2A and OC2B synced
@@ -135,14 +135,14 @@ void pwm_hw_setup()
 	OCR2B = 0;
 
 	// set none-inverting mode A
-	TCCR2A |= 
+	TCCR2A |= (1 << COM2A1);
 	// set none-inverting mode B
-	TCCR2A |= 
+	TCCR2A |= (1 << COM2B1);
 
 	// set fast PWM Mode
-	TCCR2A |= 
+	TCCR2A |= (1 << WGM21) | (1 << WGM20);
 	// START WITH NO PRESCALER
-	TCCR2B |= 
+	TCCR2B |= (1 << CS20);
 
 	// SELECT PINS we're going out on for our schematic
 	/* set OC2B = Arduino_Pin3 pin as output - TIMER 2 */
