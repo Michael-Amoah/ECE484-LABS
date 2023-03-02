@@ -21,10 +21,10 @@ ISR(TIMER1_OVF_vect)
 
 int main(void)
 {
+	int times_key_pressed = 0;
 	uint8_t key;
 	uint8_t old_key = 0; // NOTE will start with 0 on first pass
 	double how_many_loops = 0;
-	uint8_t how_many_keypress_runs = 0;
 
 	//Setup
 	LCD_Setup();
@@ -68,14 +68,17 @@ int main(void)
 	while (1)
 	{
 		how_many_loops++;
+		_delay_ms(25);
 
 		if(keypad_flag)
 		{
 			keypad_flag = 0; // reset the flag for next ISR
 
 			key = key_pressed();
+			times_key_pressed++;
 			if (key > 0)
 			{
+
 				uint8_t column;
 				uint8_t row;
 				
@@ -84,6 +87,7 @@ int main(void)
 					old_key = key;
 					how_many_ISR = 0;
 					how_many_loops = 0;
+					times_key_pressed = 0;
 				}
 	
 				/* decode column and row noting C0 = 1,..., C2 = 3, R0 = 1,..., R3 = 4 */
@@ -93,16 +97,13 @@ int main(void)
 				/* print column on top and row on bottom */
 				LCD_Clear();
 				LCD_GotoXY(0,0);
-				LCD_PrintInteger(column);
-				LCD_GotoXY(0,1);
-				LCD_PrintInteger(row);
+				LCD_PrintDouble(how_many_loops, 1);
 				/* print out other stats */
 				LCD_GotoXY(8,0);
 				LCD_PrintInteger(how_many_ISR);
 				LCD_GotoXY(8,1);
-
 				//LCD_PrintDouble(how_many_loops, 1);
-				LCD_PrintInteger(how_many_keypress_runs);
+				LCD_PrintInteger(times_key_pressed );
 			}
 		}
 	}

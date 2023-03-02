@@ -10,7 +10,8 @@ int main(void)
 	uint8_t key;
 	uint8_t old_key = 0;
 	double how_many_loops = 0;
-	uint8_t how_many_keypress_runs = 0;
+	int times_key_pressed = 0;
+
 	//Setup
 	LCD_Setup();
 	keypad_setup();
@@ -42,9 +43,13 @@ int main(void)
 	{
 		int poll_times;
 
-		_delay_ms(15); // poll delay of 15ms
+//		_delay_ms(5); // poll delay of 15ms
 
+//		_delay_ms(20); // poll delay of 15ms
+//
 		key = key_pressed();
+		times_key_pressed++;
+
 		if (key > 0)
 		{
 			uint8_t column;
@@ -55,6 +60,7 @@ int main(void)
 				old_key = key;
 				poll_times = 0;
 				how_many_loops = 0;
+				times_key_pressed = 0;
 			}
 			else
 			{
@@ -76,7 +82,7 @@ int main(void)
 			LCD_PrintInteger(poll_times);
 			LCD_GotoXY(8,1);
 			//LCD_PrintDouble(how_many_loops, 1);
-			LCD_PrintInteger(how_many_keypress_runs);
+			LCD_PrintInteger(times_key_pressed);
 		}
 
 		how_many_loops ++;

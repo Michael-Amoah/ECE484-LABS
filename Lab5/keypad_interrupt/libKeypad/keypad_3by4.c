@@ -223,7 +223,7 @@ void keypad_setup()
 uint8_t key_pressed()
 {
 	uint8_t column;
-	uint8_t row;
+	uint8_t row = 0x00;
 	uint8_t return_val = 0x00;
 
 	if ((column = read_columns_Z()) != 0)
