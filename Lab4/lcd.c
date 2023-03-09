@@ -21,6 +21,9 @@ int main(void)
 	uint8_t remainder;
 	button_count = 0;
 	line = 0;
+	LCD_GotoXY(0,0);
+	LCD_PrintString("Button 1: Menu");
+
 	LCD_Clear();
 
 	while (1)

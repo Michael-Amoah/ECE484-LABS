@@ -33,10 +33,10 @@
 #define LCD_Type	A
 
 //LCD pins			PORT, PIN
-#define LCD_D4		D, 1 // Arduino 1
-#define LCD_D5		D, 2 // Arduino 2
+#define LCD_D4		D, 1 // Arduino 5
+#define LCD_D5		D, 2 // Arduino 4
 #define LCD_D6		D, 3 // Arduino 3
-#define LCD_D7		D, 4 // Arduino 4
+#define LCD_D7		D, 4 // Arduino 2
 #define LCD_RS		D, 7 // Arduino 12
 #define LCD_RW		B, 0 // Arduino 10
 #define LCD_EN		B, 1 // Arduino 11
