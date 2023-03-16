@@ -27,7 +27,6 @@ void SPI_init_child()
 	//SPCR = (1 << SPE) | (1 << SPR1) | (1 << SPR0);
 	//SPCR = (1 << SPE) | (1 << SPR1); //fosc/64 
 	SPCR = (1 << SPE) | (1 << SPR0); //fosc/16 
-//	SPCR = (1 << SPE); //fosc/4
 
 #else
 	// No Interupts
@@ -60,9 +59,7 @@ void SPI_parent_init()
 	// enable SPI, set as master, and clock to fosc/128 - slow as possible
 	// fosc/128
 #ifdef HW_SPI_PARENT
-	// SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
-	// SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0); // fosc/64
-	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1); // fosc/16
+	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
 
 	clean_reg = SPSR;
 	clean_reg = SPDR;
@@ -111,7 +108,7 @@ uint8_t SPI_txrx_child(uint8_t data_to_tx)
 
 uint8_t SPI_txrx_parent(uint8_t data_to_tx)
 {
-	int tx_delay = 50;
+	int tx_delay = 10;
 #ifdef HW_SPI_PARENT
 	// load data into register
 	SPDR = data_to_tx;
